@@ -6,6 +6,11 @@ import pickle
 import streamlit as st
 from typing import List
 
+__import__("pysqlite3")
+import sys
+
+sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
+
 from langchain_community.vectorstores import Chroma
 from langchain_openai import ChatOpenAI
 from langchain_community.document_loaders import PyPDFLoader
