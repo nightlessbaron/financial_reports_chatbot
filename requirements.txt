@@ -6,3 +6,4 @@ langchain_text_splitters==0.2.2
 streamlit==1.36.0
 pypdf==4.2.0
 chromadb==0.5.3
+protobuf==4.25.3
