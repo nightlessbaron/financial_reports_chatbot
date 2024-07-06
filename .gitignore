@@ -2,4 +2,5 @@ run_this_first.sh
 thought_process.txt
 time_taken.txt
 data/vectordb/
+data/docs.pkl
 .streamlit/

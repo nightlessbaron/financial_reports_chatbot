@@ -235,19 +235,16 @@ def verify_answer_with_documents(answer, documents):
     return verification_status, confidence_score
 
 
-def stream_data(answer):
-    for word in answer.split(" "):
-        yield word + " "
-        time.sleep(0.02)
-
-
 def display_answer_with_references(
     answer, references, confidence_score, verifiable_status
 ):
     st.markdown(
         f"### Answer (Confidence: {confidence_score*100:.2f}%), Verifiable: {verifiable_status}:"
     )
-    st.write_stream(stream_data(answer))
+    with st.chat_message("assistant"):
+        response = st.write_stream(answer)
+    st.session_state.messages.append({"role": "assistant", "content": response})
+
     st.markdown("#### References:")
     for ref in references:
         st.markdown(f"- {ref.page_content}")
@@ -305,6 +302,13 @@ def main():
         unsafe_allow_html=True,
     )
 
+    if "messages" not in st.session_state:
+        st.session_state.messages = []
+
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+
     with st.sidebar:
         st.markdown("<h3 style='color: #2ecc71;'>Menu:</h3>", unsafe_allow_html=True)
         # company_name = st.text_input("**Company name**", key="company_input")
@@ -345,8 +349,12 @@ def main():
         "<h3 style='color: #ddd;'>Ask a question to the chatbot ≽^•⩊•^≼</h3>",
         unsafe_allow_html=True,
     )
-    user_question = st.text_input("Enter your question here:", key="user_question")
-    if user_question:
+
+    if user_question := st.chat_input("Enter your question here:"):
+        st.session_state.messages.append({"role": "user", "content": user_question})
+        with st.chat_message("user"):
+            st.markdown(user_question)
+
         if "rag_chain" not in st.session_state:
             with st.spinner("Loading chatbot ..."):
                 vectordb = st.session_state.get("vectordb")
