@@ -281,7 +281,7 @@ def generate_faqs(conversational_rag_chain):
 
 
 def stream(text):
-    for word in text.split():
+    for word in text.split()[:100]:
         yield word + " "
         time.sleep(0.05)
 
@@ -330,23 +330,23 @@ def main():
             "Process PDFs",
         ):
             with st.spinner("Processing..."):
-                if os.path.exists("data/vectordb"):
-                    vectordb = Chroma(
-                        persist_directory="data/vectordb",
-                        embedding_function=OpenAIEmbeddings(),
-                    )
-                else:
-                    docs = extract_text_from_pdf("data/pdfs/")
-                    splits = get_text_chunks(docs)
-                    vectordb = get_vectordb(splits, "data/")
+                # if os.path.exists("data/vectordb"):
+                #     vectordb = Chroma(
+                #         persist_directory="data/vectordb",
+                #         embedding_function=OpenAIEmbeddings(),
+                #     )
+                # else:
+                docs = extract_text_from_pdf("data/pdfs/")
+                splits = get_text_chunks(docs)
+                vectordb = get_vectordb(splits, "data/")
 
-                if not os.path.exists("data/docs.pkl"):
-                    docs = extract_text_from_pdf("data/pdfs/")
-                    with open("data/docs.pkl", "wb") as f:
-                        pickle.dump(docs, f)
-                else:
-                    with open("data/docs.pkl", "rb") as f:
-                        docs = pickle.load(f)
+                # if not os.path.exists("data/docs.pkl"):
+                #     docs = extract_text_from_pdf("data/pdfs/")
+                #     with open("data/docs.pkl", "wb") as f:
+                #         pickle.dump(docs, f)
+                # else:
+                    # with open("data/docs.pkl", "rb") as f:
+                    #     docs = pickle.load(f)
                 st.write("PDFs processed and indexed.")
                 st.session_state["docs"] = docs
                 st.session_state["vectordb"] = vectordb
