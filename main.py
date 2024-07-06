@@ -211,8 +211,9 @@ def save_uploaded_file(pdf_doc) -> None:
     """
     os.makedirs("data/pdfs", exist_ok=True)
     if os.path.exists("data/pdfs"):
-        for file_name in os.listdir("data/pdfs"):
-            os.remove(file_name)
+        for file_name in os.listdir("data/pdfs/"):
+            file_path = os.path.join("data/pdfs/", file_name)
+            os.remove(file_path)
     with open(f"data/pdfs/{pdf_doc.name}", "wb") as f:
         f.write(pdf_doc.getbuffer())
 
