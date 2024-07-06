@@ -399,9 +399,4 @@ def main():
 
 
 if __name__ == "__main__":
-    # main()
-    loader = PyPDFLoader(file_path="data/pdfs/2019-Annual-Report.pdf")
-    doc = loader.load_and_split()
-    splits = get_text_chunks(doc)
-    splits[0].page_content = splits[0].page_content + " Year 2019"
-    print(splits[0].page_content)
+    main()
