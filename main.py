@@ -311,6 +311,11 @@ def main():
         unsafe_allow_html=True,
     )
 
+    st.markdown(
+        "<h3 style='color: #ddd;'>Ask a question to the chatbot ≽^•⩊•^≼</h3>",
+        unsafe_allow_html=True,
+    )
+
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
@@ -348,16 +353,11 @@ def main():
                 #     with open("data/docs.pkl", "wb") as f:
                 #         pickle.dump(docs, f)
                 # else:
-                    # with open("data/docs.pkl", "rb") as f:
-                    #     docs = pickle.load(f)
+                # with open("data/docs.pkl", "rb") as f:
+                #     docs = pickle.load(f)
                 st.write("PDFs processed and indexed.")
                 st.session_state["docs"] = docs
                 st.session_state["vectordb"] = vectordb
-
-    st.markdown(
-        "<h3 style='color: #ddd;'>Ask a question to the chatbot ≽^•⩊•^≼</h3>",
-        unsafe_allow_html=True,
-    )
 
     if user_question := st.chat_input("Enter your question here:"):
         st.session_state.messages.append({"role": "user", "content": user_question})
@@ -402,4 +402,9 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # main()
+    loader = PyPDFLoader(file_path="data/pdfs/2019-Annual-Report.pdf")
+    doc = loader.load_and_split()
+    splits = get_text_chunks(doc)
+    splits[0].page_content = splits[0].page_content + " Year 2019"
+    print(splits[0].page_content)
