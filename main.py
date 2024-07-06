@@ -204,8 +204,8 @@ def save_uploaded_file(pdf_doc) -> None:
     Returns:
         None
     """
-    os.makedirs("data/", exist_ok=True)
-    with open(f"data/{pdf_doc.name}", "wb") as f:
+    os.makedirs("data/pdfs", exist_ok=True)
+    with open(f"data/pdfs/{pdf_doc.name}", "wb") as f:
         f.write(pdf_doc.getbuffer())
 
 
@@ -321,12 +321,12 @@ def main():
                         embedding_function=OpenAIEmbeddings(),
                     )
                 else:
-                    docs = extract_text_from_pdf("data/")
+                    docs = extract_text_from_pdf("data/pdfs/")
                     splits = get_text_chunks(docs)
                     vectordb = get_vectordb(splits, "data/")
 
                 if not os.path.exists("data/docs.pkl"):
-                    docs = extract_text_from_pdf("data/")
+                    docs = extract_text_from_pdf("data/pdfs/")
                     with open("data/docs.pkl", "wb") as f:
                         pickle.dump(docs, f)
                 else:
