@@ -242,7 +242,7 @@ def display_answer_with_references(
         f"### Answer (Confidence: {confidence_score*100:.2f}%), Verifiable: {verifiable_status}:"
     )
     with st.chat_message("assistant"):
-        response = st.write_stream(answer)
+        response = st.write_stream(stream(answer))
     st.session_state.messages.append({"role": "assistant", "content": response})
 
     st.markdown("#### References:")
@@ -278,6 +278,12 @@ def generate_faqs(conversational_rag_chain):
         )["answer"]
         faqs.append((question, answer))
     return faqs
+
+
+def stream(text):
+    for word in text.split():
+        yield word + " "
+        time.sleep(0.05)
 
 
 def main():
