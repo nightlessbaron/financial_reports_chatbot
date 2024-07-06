@@ -1,5 +1,7 @@
 # FAANG Financial Reports Chatbot
 
+![Financial Reports Chatbot](metadata/streamlit_finance_chatbot.png)
+
 ## Overview
 
 The FAANG Financial Reports Chatbot is a conversational AI designed to answer questions related to the financial reports of big listed public companies. This chatbot leverages a knowledge base created from PDF files of financial reports, ensuring that responses are factual and grounded in actual data to minimize hallucination and provide accurate information.
