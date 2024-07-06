@@ -19,10 +19,15 @@ from langchain.chains import create_history_aware_retriever, create_retrieval_ch
 from langchain.chains.combine_documents import create_stuff_documents_chain
 
 
-# Load environment variables
-os.environ["TOGETHER_API_KEY"] = os.getenv("TOGETHER_API_KEY")
-os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
-os.environ["LANGCHAIN_TRACING_V2"] = os.getenv("LANGCHAIN_TRACING_V2")
+# Accessing the secrets
+together_api_key = st.secrets["TOGETHER_API_KEY"]
+langchain_api_key = st.secrets["LANGCHAIN_API_KEY"]
+langchain_tracing_v2 = st.secrets["LANGCHAIN_TRACING_V2"]
+
+# Set environment variables
+os.environ["TOGETHER_API_KEY"] = together_api_key
+os.environ["LANGCHAIN_API_KEY"] = langchain_api_key
+os.environ["LANGCHAIN_TRACING_V2"] = langchain_tracing_v2
 
 
 def get_session_history(session_id: str) -> BaseChatMessageHistory:
