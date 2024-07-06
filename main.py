@@ -316,6 +316,9 @@ def main():
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
+    # generate a random hash for the session_id
+    st.session_state.session_id = re.sub(r"\W+", "", str(random.getrandbits(64)))
+
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
@@ -374,7 +377,7 @@ def main():
         with st.spinner("Generating answer ..."):
             response = conversational_rag_chain.invoke(
                 {"input": user_question},
-                config={"configurable": {"session_id": "1"}},
+                config={"configurable": {"session_id": st.session_state.session_id}},
             )
 
             answer = response["answer"]
