@@ -209,6 +209,9 @@ def save_uploaded_file(pdf_doc) -> None:
     Returns:
         None
     """
+    for file_name in os.listdir("data/pdfs"):
+        if file_name.endswith(".pdf"):
+            os.remove(os.path.join("data/pdfs", file_name))
     os.makedirs("data/pdfs", exist_ok=True)
     with open(f"data/pdfs/{pdf_doc.name}", "wb") as f:
         f.write(pdf_doc.getbuffer())
